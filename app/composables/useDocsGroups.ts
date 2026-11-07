@@ -1,9 +1,3 @@
-import {
-  DEFAULT_CATEGORY_ICON,
-  DOC_CATEGORY_PRESENTATION,
-  categoryRoute,
-} from '~/data/docsCategories';
-
 export interface DocEntry {
   path: string;
   title: string;
@@ -20,7 +14,6 @@ export interface DocEntry {
 export interface DocGroup {
   name: string;
   description?: string;
-  icon: string;
   order: number;
   route: string;
   entries: DocEntry[];
@@ -50,12 +43,12 @@ export async function useDocsGroups() {
       // 排除两个位置：/docs 概览本身，以及 /docs/<组> 这种「分类首页」——
       // 后者由分类页承担，混在列表里会多出一行「0 用户文档」的怪东西
       .filter((entry) => entry.path !== '/docs' && !/^\/docs\/[^/]+$/.test(entry.path))
-      .map((entry) => ({ ...entry, categoryOrder: entry.categoryOrder ?? 999 }))
+      .map((entry) => ({
+        ...entry,
+        order: entry.order ?? 999,
+        categoryOrder: entry.categoryOrder ?? 999,
+      }))
       .sort((a, b) => a.order - b.order),
-  );
-
-  const presentation = computed(() =>
-    Object.fromEntries(DOC_CATEGORY_PRESENTATION.map((item) => [item.name, item])),
   );
 
   const groups = computed<DocGroup[]>(() => {
@@ -64,18 +57,22 @@ export async function useDocsGroups() {
     for (const entry of entries.value) {
       let group = map.get(entry.category);
       if (!group) {
-        const preset = presentation.value[entry.category];
         group = {
           name: entry.category,
-          description: preset?.description,
-          icon: preset?.icon ?? DEFAULT_CATEGORY_ICON,
-          order: preset?.order ?? entry.categoryOrder,
-          route: categoryRoute(entry.category),
+          order: entry.categoryOrder,
+          route: `/docs/category/${encodeURIComponent(entry.category)}`,
           entries: [],
         };
         map.set(entry.category, group);
       }
       group.entries.push(entry);
+    }
+
+    // 分类描述由文章动态探测：优先取该分类的「索引 / 简介」页（order 为 0），
+    // 没有则回退到组内第一篇；都不存在则为空。不再写死在代码里。
+    for (const group of map.values()) {
+      group.description =
+        group.entries.find((e) => e.order === 0)?.description ?? group.entries[0]?.description;
     }
 
     return [...map.values()].sort(

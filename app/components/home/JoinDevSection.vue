@@ -27,7 +27,8 @@ import { JOIN_CARDS } from '~/data/home';
               trailing-icon="i-lucide-arrow-up-right"
               :label="link.label"
             />
-            <UButton v-else
+            <UButton
+              v-else
               :to="withBase(link.to)"
               variant="soft"
               size="sm"

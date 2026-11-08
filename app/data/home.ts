@@ -66,8 +66,8 @@ export interface JoinCard {
   links: {
     label: string;
     to: string;
-    external?: boolean,
-    icon?: string
+    external?: boolean;
+    icon?: string;
   }[];
 }
 
@@ -90,7 +90,7 @@ export const JOIN_CARDS: JoinCard[] = [
         label: 'GitHub 仓库',
         to: 'https://github.com/PidanUI-Team/OpenPidanUI',
         external: true,
-        icon: 'i-simple-icons-github'
+        icon: 'i-simple-icons-github',
       },
       { label: '开发者文档', to: '/docs/developer' },
     ],

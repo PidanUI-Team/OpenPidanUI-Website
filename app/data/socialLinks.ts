@@ -27,10 +27,20 @@ export const SOCIAL_LINKS: Link[] = [
     href: 'https://space.bilibili.com/',
     icon: 'i-simple-icons-bilibili',
   },
-  { key: 'qq', label: 'QQ 群', href: 'https://qm.qq.com/q/Km93h8YWAw', icon: 'i-simple-icons-tencentqq' },
+  {
+    key: 'qq',
+    label: 'QQ 群',
+    href: 'https://qm.qq.com/q/Km93h8YWAw',
+    icon: 'i-simple-icons-tencentqq',
+  },
 ];
 
 /** 友情链接 */
 export const FRIEND_LINKS: Link[] = [
-  { key: 'qq', label: 'QQ 群', href: 'https://qm.qq.com/q/Km93h8YWAw', icon: 'i-simple-icons-tencentqq' },
+  {
+    key: 'qq',
+    label: 'QQ 群',
+    href: 'https://qm.qq.com/q/Km93h8YWAw',
+    icon: 'i-simple-icons-tencentqq',
+  },
 ];

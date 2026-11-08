@@ -6,7 +6,7 @@ import { SITE } from '#shared/site';
 // 全站底栏（与 PidanUI 官网同构）：品牌与站点导航（同时承担无 JS 时的导航兜底）、
 // 关注我们、友情链接；底部左侧是版权说明。
 /** 站点年份，需要写死成字符串而不是动态获取 */
-const year: string = "2026";
+const year: string = '2026';
 </script>
 
 <template>

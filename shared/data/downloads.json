@@ -3,20 +3,21 @@
   "fetchedAt": null,
   "releases": [
     {
-      "tag": "v0.1.0-preview",
-      "version": "0.1.0-preview",
-      "name": "首个预览版（占位数据）",
-      "publishedAt": "2026-11-01T00:00:00Z",
-      "publishedAtLabel": "2026-11-01",
-      "prerelease": true,
-      "notes": "这是一份随站点入库的占位数据：仓库还没有正式发布 Release。\n正式发版后，构建期会自动从 GitHub Releases 拉取真实版本，本条目随即失效。\n\n包含内容（规划中）：\nRainmeter 小组件 .rmskin\n组件设置程序 HomeSettings",
-      "htmlUrl": "https://github.com/PidanUI-Team/OpenPidanUI/releases",
+      "tag": "v1.0-Widgets",
+      "version": "1.0-Widgets",
+      "name": "v1.0-Widgets",
+      "publishedAt": "2026-11-08T01:23:45Z",
+      "publishedAtLabel": "2026-11-08",
+      "prerelease": false,
+      "notes": "OpenPidanUI v1.0（目前仅含 Rainmeter 小组件）正式发布。\n关键改进：Rainmeter 最低版本要求提升至 5.0 RC1（高 DPI 支持）；配套辅助程序升级到 .NET 10 + WPF，UI 大幅简化，为后续蛋仔风格化 UI 铺路。",
+      "htmlUrl": "https://github.com/PidanUI-Team/OpenPidanUI/releases/tag/v1.0-Widgets",
       "assets": [
         {
-          "name": "OpenPidanUI-Widgets-0.1.0-preview.rmskin",
-          "size": 2411724,
+          "name": "OpenPidanUI_v1.0-Widgets.zip",
+          "size": 2937066,
           "downloadCount": 0,
-          "url": "https://github.com/PidanUI-Team/OpenPidanUI/releases"
+          "url": "https://github.com/PidanUI-Team/OpenPidanUI/releases/download/v1.0-Widgets/OpenPidanUI_v1.0-Widgets.zip",
+          "contentType": "application/x-zip-compressed"
         }
       ]
     }

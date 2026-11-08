@@ -26,7 +26,7 @@ export default defineEventHandler(async (): Promise<ReleasesPayload> => {
           'X-GitHub-Api-Version': '2022-11-28',
           // GitHub 强制要求 UA，Node 默认不带，缺了直接 403
           'User-Agent':
-            'OpenPidanUI-Website/0.1 (+https://github.com/PidanEggyTeam/OpenPidanUI-Website)',
+            'OpenPidanUI-Website/0.1 (+https://github.com/PidanUI-Team/OpenPidanUI-Website)',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         signal: AbortSignal.timeout(5000),

@@ -10,7 +10,6 @@ export const SITE = {
   repoUrl: 'https://github.com/PidanUI-Team/OpenPidanUI',
   siteRepoUrl: 'https://github.com/PidanEggyTeam/OpenPidanUI-Website',
   newsUrl: 'https://pidanui.eggycore.top/posts/',
-  license: 'AGPL-3.0',
   mainUrl: 'https://open.pidanui.eggycore.top/',
   locale: 'zh-CN',
 } as const;

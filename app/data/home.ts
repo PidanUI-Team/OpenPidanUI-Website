@@ -77,7 +77,7 @@ export const JOIN_CARDS: JoinCard[] = [
     description: '装上了想反馈问题，或者只是来看看别人怎么用。',
     icon: 'i-lucide-users',
     links: [
-      { label: 'QQ 群', to: '#qq-group', external: true },
+      { label: 'QQ 群', to: 'https://qm.qq.com/q/Km93h8YWAw', external: true },
       { label: '哔哩哔哩', to: 'https://space.bilibili.com/', external: true },
     ],
   },

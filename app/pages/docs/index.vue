@@ -29,9 +29,9 @@ const leadDescription = computed(() => {
         class="mt-8"
         color="neutral"
         variant="subtle"
-        icon="i-lucide-circle-alert"
-        title="文档还在补"
-        description="首版只写了最必要的部分。发现哪一步说不清楚，直接去仓库提 issue，比在群里问更快。"
+        icon="i-lucide-info"
+        title="文档的写作正在进行中 "
+        description="首版只写了一些必要的部分。如果你觉得文档不完善的话，可以直接去网站仓库提 Issue。"
       />
     </div>
   </div>

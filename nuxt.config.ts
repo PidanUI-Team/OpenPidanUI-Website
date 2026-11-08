@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
 import { buildRoutes } from './build/routes';
+import { rehypeExternalLinksBlank } from './build/rehype-external-links';
 
 // ---- 字体（自包含）----
 // 生产：`nuxi generate` 之后由 scripts/sync-fonts.mjs 生成 /fonts/harmonyos.css；
@@ -107,6 +108,10 @@ export default defineNuxtConfig({
             'css',
             'diff',
           ],
+        },
+        // 站外链接一律新开标签页，站内相对路径/锚点保持原样（与 PidanUI 官网同款规则）
+        rehypePlugins: {
+          'rehype-external-links-blank': { instance: rehypeExternalLinksBlank },
         },
       },
     },

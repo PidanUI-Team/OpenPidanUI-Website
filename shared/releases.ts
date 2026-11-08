@@ -4,6 +4,10 @@ export interface ReleaseAsset {
   size: number;
   downloadCount: number;
   url: string;
+  /** GitHub 资产 label（可为空），用于更友好的展示名 */
+  label?: string;
+  /** GitHub 资产 content_type，例如 application/x-zip-compressed */
+  contentType?: string;
 }
 
 export interface SiteRelease {
@@ -27,6 +31,8 @@ export interface ReleasesPayload {
 
 interface GithubAsset {
   name: string;
+  label: string | null;
+  content_type: string;
   size: number;
   download_count: number;
   browser_download_url: string;
@@ -34,6 +40,7 @@ interface GithubAsset {
 
 export interface GithubRelease {
   tag_name: string;
+  target_commitish?: string;
   name: string | null;
   body: string | null;
   html_url: string;
@@ -85,6 +92,8 @@ export function normalizeReleases(raw: GithubRelease[]): SiteRelease[] {
           size: a.size,
           downloadCount: a.download_count,
           url: a.browser_download_url,
+          label: a.label ?? undefined,
+          contentType: a.content_type,
         })),
     }));
 }

@@ -12,12 +12,6 @@ import { JOIN_CARDS } from '~/data/home';
       :description="card.description"
       variant="outline"
     >
-      <div v-if="card.tags.length" class="flex flex-wrap gap-2">
-        <UBadge v-for="tag in card.tags" :key="tag" variant="subtle" color="neutral" size="sm">
-          {{ tag }}
-        </UBadge>
-      </div>
-
       <template #footer>
         <div class="flex flex-wrap gap-2">
           <template v-for="link in card.links" :key="link.label">
@@ -26,13 +20,20 @@ import { JOIN_CARDS } from '~/data/home';
               :to="link.to"
               target="_blank"
               rel="noopener noreferrer"
+              :icon="link.icon"
               variant="soft"
               color="neutral"
               size="sm"
               trailing-icon="i-lucide-arrow-up-right"
               :label="link.label"
             />
-            <UButton v-else :to="withBase(link.to)" variant="soft" size="sm" :label="link.label" />
+            <UButton v-else
+              :to="withBase(link.to)"
+              variant="soft"
+              size="sm"
+              :label="link.label"
+              :icon="link.icon"
+            />
           </template>
         </div>
       </template>

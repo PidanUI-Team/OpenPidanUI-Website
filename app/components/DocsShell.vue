@@ -4,7 +4,8 @@
  * 不用 Drawer —— 与顶栏同一种「grid-rows 0fr↔1fr + inert」的展开方式。
  *
  * 目录顺序以 frontmatter 的 `order` 为准：@nuxt/content 生成的 navigation 按文件系统排，
- * 这里用 order 映射把它纠正回来（分类组之间按 DOC_CATEGORIES 的 order）。
+ * 这里用分类 `.navigation.yml` 的 `categoryOrder`（经 useDocsGroups）与文章 `order` 映射成 navRank 把它纠正回来；
+ * 同时把每个「分类目录节点」的标题强制绑定为 `.navigation.yml` 里的分类名，避免其误沿用 landing 页标题。
  */
 import type { ContentNavigationItem } from '@nuxt/content';
 
@@ -14,7 +15,7 @@ defineProps<{
 }>();
 
 const navigation = inject<Ref<ContentNavigationItem[] | null>>('navigation');
-const { navRank } = await useDocsGroups();
+const { navRank, categoryTitles } = await useDocsGroups();
 const open = ref(false);
 
 function sortItems(items: ContentNavigationItem[]): ContentNavigationItem[] {
@@ -34,7 +35,24 @@ function sortItems(items: ContentNavigationItem[]): ContentNavigationItem[] {
     });
 }
 
-const sortedNavigation = computed(() => sortItems(navigation.value ?? []));
+/**
+ * 用 `.navigation.yml` 的分类名覆盖导航树里「分类目录节点」的标题。
+ * @nuxt/content 在生成树时会把分类 landing 页（index）并入目录节点，可能让目录节点
+ * 标题变成 landing 页标题；这里按目录路径显式绑定回分类名，确保二级分类标题正确。
+ * 仅覆盖带子项的「容器 / 目录节点」，叶子页面（含与目录同路径的 landing 页）保留自身标题。
+ */
+function applyCategoryTitles(items: ContentNavigationItem[]): ContentNavigationItem[] {
+  return items.map((item) => {
+    const overridden = categoryTitles[item.path ?? ''];
+    const next = overridden && item.children?.length ? { ...item, title: overridden } : item;
+    if (next.children?.length) {
+      return { ...next, children: applyCategoryTitles(next.children) };
+    }
+    return next;
+  });
+}
+
+const sortedNavigation = computed(() => applyCategoryTitles(sortItems(navigation.value ?? [])));
 </script>
 
 <template>

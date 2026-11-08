@@ -1,11 +1,12 @@
-export interface SocialLink {
+export interface Link {
   key: string;
   label: string;
   href: string;
   icon: string;
 }
 
-export const SOCIAL_LINKS: SocialLink[] = [
+/** 社交链接 */
+export const SOCIAL_LINKS: Link[] = [
   {
     key: 'github',
     label: 'GitHub',
@@ -29,15 +30,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { key: 'qq', label: 'QQ 群', href: '#qq-group', icon: 'i-simple-icons-tencentqq' },
 ];
 
-export interface FriendLink {
-  label: string;
-  href: string;
-  description: string;
-}
-
-/** 友链：先占位，等确认清单后替换。 */
-export const FRIEND_LINKS: FriendLink[] = [
-  { label: 'PidanUI 官网', href: 'https://pidanui.eggycore.top/', description: '主项目主页与新闻' },
-  { label: 'EasiAuto', href: 'https://easiauto.cc/', description: '希沃白板自动化工具' },
-  { label: 'GitCode 镜像', href: 'https://gitcode.com/', description: '国内代码镜像' },
+/** 友情链接 */
+export const FRIEND_LINKS: Link[] = [
+  { key: 'qq', label: 'QQ 群', href: '#qq-group', icon: 'i-simple-icons-tencentqq' },
 ];

@@ -11,9 +11,6 @@ export const SITE = {
   siteRepoUrl: 'https://github.com/PidanEggyTeam/OpenPidanUI-Website',
   newsUrl: 'https://pidanui.eggycore.top/posts/',
   license: 'AGPL-3.0',
-  /** 部署域名确认后改成真实域名，canonical / OG 依赖它。 */
-  mainUrl: 'https://openpidanui-website.pidaneggyteam.workers.dev',
+  mainUrl: 'https://open.pidanui.eggycore.top/',
   locale: 'zh-CN',
 } as const;
-
-export const PROMO_IMAGE = 'https://img.remit.ee/i/hsjlCZAGQuf2';

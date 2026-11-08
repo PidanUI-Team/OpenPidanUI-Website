@@ -10,7 +10,7 @@ defineProps<{ groups: DocGroup[] }>();
       <div class="flex items-center gap-2">
         <h2 class="text-base font-semibold text-highlighted">{{ group.name }}</h2>
         <UBadge variant="subtle" color="neutral" size="sm" class="ml-auto"
-          >{{ group.entries.length }} 篇</UBadge
+          >{{ group.displayEntries.length }} 篇</UBadge
         >
       </div>
 
@@ -19,7 +19,7 @@ defineProps<{ groups: DocGroup[] }>();
       </p>
 
       <ol class="mt-4 space-y-1.5">
-        <li v-for="entry in group.entries" :key="entry.path">
+        <li v-for="entry in group.displayEntries" :key="entry.path">
           <NuxtLink
             :to="withBase(entry.path)"
             class="group flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted transition-colors hover:bg-elevated hover:text-highlighted"

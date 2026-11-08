@@ -10,8 +10,6 @@ export default defineContentConfig({
         category: z.string().min(1),
         /** 分类内的显示序号：侧边栏、分类页、上下篇都按它排 */
         order: z.number(),
-        /** 分类之间的排序权重（小的在前）；不填按分类名排序 */
-        categoryOrder: z.number().default(999),
         badge: z.string().optional(),
         draft: z.boolean().default(false),
       }),

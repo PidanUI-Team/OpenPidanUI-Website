@@ -50,7 +50,10 @@ export default defineAppConfig({
       ul: { base: '' },
       ol: { base: '' },
       li: { base: '' },
-      blockquote: { base: '' },
+      // Nuxt UI 的 ProseBlockquote 主题默认带 italic 工具类（extend 合并且
+      // 空串压不掉）。这里用 not-italic 在同组里覆盖它，让引用块默认保持正体；
+      // 显式修饰符（*强调* → <em>）仍由元素自身渲染为斜体。
+      blockquote: { base: 'not-italic' },
       hr: { base: '' },
       img: { base: '' },
       table: { base: '' },

@@ -42,7 +42,7 @@ useSeoMeta({
 
     <div class="pb-4">
       <ol class="space-y-3">
-        <li v-for="entry in group?.entries ?? []" :key="entry.path">
+        <li v-for="entry in group?.displayEntries ?? []" :key="entry.path">
           <NuxtLink
             :to="withBase(entry.path)"
             class="group flex items-start gap-4 rounded-xl border border-default bg-elevated/40 p-4 transition-colors hover:border-primary/40 hover:bg-elevated"

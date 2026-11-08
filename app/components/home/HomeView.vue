@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ABOUT_TEXT, ABOUT_TIMELINE } from '~/data/home';
-import { PROMO_IMAGE } from '#shared/site';
+import { ABOUT_TEXT, ABOUT_TIMELINE, PROMO_IMAGE } from '~/data/home';
 
 // 首页版式与 PidanUI 官网一致：Hero（左文右图）→ 温馨提示 → 项目特性 →
 // 组件展示 → 关于 → 加入开发，区块节奏走同一份 SECTION_UI。
@@ -32,14 +31,13 @@ const SECTION_UI = {
         <span
           class="hero-title text-[clamp(34px,5.4vw,54px)] leading-[1.15] font-extrabold tracking-[1px]"
         >
-          Open<em>PidanUI</em>
+          OpenPidanUI
         </span>
       </template>
 
       <template #description>
         <p class="max-w-[560px] text-[15.5px] leading-[1.8] text-toned">
-          用代码，为 PidanUI 构建更安全、更稳定的美化体验。
-          组件全部模块化、可审查，不替换任何系统文件。
+          在你的电脑上自由定制一个《蛋仔派对》风格的桌面，只需几分钟。
         </p>
       </template>
 

@@ -1,3 +1,6 @@
+/** 首页宣传图 */
+export const PROMO_IMAGE = 'https://img.remit.ee/i/UQi9eaPKuGU4';
+
 export interface FeatureItem {
   icon: string;
   title: string;
@@ -9,13 +12,7 @@ export const HOME_FEATURES: FeatureItem[] = [
   {
     icon: 'i-lucide-terminal',
     title: '.NET 10 技术栈',
-    description: '组件全面转向 .NET 10，告别易语言：高 DPI 缩放不再是玄学，杀软误报也少了一大截。',
-  },
-  {
-    icon: 'i-lucide-shield-check',
-    title: '不修改系统文件',
-    description:
-      '不替换 imageres.dll.mun、shell32.dll.mun 这类文件。美化靠主题包、壁纸与音效，卸载只要切回默认主题。',
+    description: '组件全面转向 .NET 10，告别易语言，杀软误报也少了一大截。',
   },
   {
     icon: 'i-lucide-palette',
@@ -32,12 +29,6 @@ export const HOME_FEATURES: FeatureItem[] = [
     icon: 'i-simple-icons-github',
     title: '开源透明',
     description: '源码可审查，欢迎提交 issue 与 PR。改了什么、为什么改，都能在提交记录里找到。',
-  },
-  {
-    icon: 'i-lucide-package',
-    title: '组件全家桶',
-    description:
-      'PowerShell 部署脚本、Rainmeter 小组件设置程序、头像制作器 AvatarMaker，配套齐全。',
   },
 ];
 
@@ -72,8 +63,12 @@ export interface JoinCard {
   title: string;
   description: string;
   icon: string;
-  links: { label: string; to: string; external?: boolean }[];
-  tags: string[];
+  links: {
+    label: string;
+    to: string;
+    external?: boolean,
+    icon?: string
+  }[];
 }
 
 export const JOIN_CARDS: JoinCard[] = [
@@ -85,16 +80,19 @@ export const JOIN_CARDS: JoinCard[] = [
       { label: 'QQ 群', to: '#qq-group', external: true },
       { label: '哔哩哔哩', to: 'https://space.bilibili.com/', external: true },
     ],
-    tags: [],
   },
   {
     title: '加入开发组',
     description: '组件都是模块化的，挑一个感兴趣的模块就能上手。',
     icon: 'i-lucide-code-xml',
     links: [
-      { label: 'GitHub 仓库', to: 'https://github.com/PidanUI-Team/OpenPidanUI', external: true },
+      {
+        label: 'GitHub 仓库',
+        to: 'https://github.com/PidanUI-Team/OpenPidanUI',
+        external: true,
+        icon: 'i-simple-icons-github'
+      },
       { label: '开发者文档', to: '/docs/developer' },
     ],
-    tags: ['.NET 10', 'C#', 'WPF', 'Rainmeter', 'PowerShell'],
   },
 ];

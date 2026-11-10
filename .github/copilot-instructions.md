@@ -61,7 +61,7 @@ pnpm format:check              # Prettier 检查（CI 用这个）
 - **构建必须零错误零警告**：`nitro.prerender.failOnError: true`，任何路由渲染失败都会让构建失败。
 - `pnpm build` 之后还有两步不要绕过：`scripts/sync-fonts.mjs` 把 HarmonyOS Sans SC 灌注进 `.output/public/fonts/`；`scripts/verify-output.mjs` 逐条校验 `build/routes.ts` 的路由都有产物（`failOnError` 抓不到「该枚举却没枚举」的漏页）。
 - 项目没有单元测试，验收方式：`pnpm generate` 通过 + 浏览器实看页面（首次可 `pnpm exec nuxt dev`，或 `pnpm preview` 预览产物）。
-- 构建期 `[releases] GitHub 不可用，回退仓库内的 downloads.json` 是**已知且预期的警告**（无网络 / 限流），不是失败。
+- 构建期不再发任何网络请求：GitHub Releases 由浏览器在 `/download` 挂载后异步拉取，构建日志里不应出现 `[releases]` 相关警告；预渲染出来的下载页本来就是 `downloads.json` 的内容。
 - 若构建报 `Another Nuxt build is already running`，说明有残留的 node 进程占着锁：先结束该 PID，再删 `node_modules/.cache/nuxt/*.lock`。
 
 ## 代码风格与 CI
@@ -107,8 +107,7 @@ app/
 content/docs/                  # 文档正文（唯一内容源）
 public/                        # images/、robots.txt、_headers（只放资源，不放注入式 JS/CSS）
 build/routes.ts                # 预渲染路由全集（含文档与分类枚举）
-server/routes/api/             # releases.json.ts（构建期抓 GitHub Releases）
-shared/                        # site.ts / releases.ts / data/downloads.json
+shared/                        # site.ts / releases.ts / data/downloads.json（离线兜底）
 scripts/                       # sync-fonts.mjs（字体灌注）/ verify-output.mjs（产物校验）
 ```
 
@@ -140,10 +139,10 @@ scripts/                       # sync-fonts.mjs（字体灌注）/ verify-output
   - `badge`（可选角标）、`draft`（`true` 时既不进导航也不进预渲染）
 - 分类的图标 / 描述 / 强制权重在 `app/data/docsCategories.ts` 的 `DOC_CATEGORY_PRESENTATION`；没配的分类走 `DEFAULT_CATEGORY_ICON` 与通用描述。
 - `useDocsGroups()` 是 **async**：调用方必须 `await`（`const { groups } = await useDocsGroups()`），否则 setup 阶段拿到的是空数组。侧边栏排序用返回的 `navRank`（分类权重 × 1000 + 组内序号）。
-- 版本数据链路：`server/routes/api/releases.json.ts` 在**构建期**拉 `PidanUI-Team/OpenPidanUI` 的 GitHub Releases，归一化成 `SiteRelease[]` 后预渲染成 `/api/releases.json`，访问端零请求。**GitHub 不可用时回退 `shared/data/downloads.json`**（结构与归一化结果一致，`source: 'snapshot'`，页面会显示「快照」提示）。
-  - 发版后必须重新构建本站，版本卡片才会更新。
-  - `app/composables/useReleases.ts` 里还有一份 `downloads.json` 兜底，用于运行时接口意外缺失的情况。
-  - **不要在组件里直接请求 GitHub API**：未认证限流 60 次/小时/IP，且会引入 CORS。
+- 版本数据链路：`app/composables/useReleases.ts` 在**客户端运行时**（`onMounted`）异步拉 `PidanUI-Team/OpenPidanUI` 的 GitHub Releases，用 `normalizeReleases()` 归一化成 `SiteRelease[]`。首屏（含预渲染静态 HTML）先渲染 `shared/data/downloads.json` 兜底数据，拉到实时结果后整体替换；**只有请求失败才回退 `downloads.json`**，此时 `source: 'snapshot'` 且页面显示「离线快照」提示。发版后无需重新构建本站。
+  - `nitro.preset: 'static'` 是纯静态产物（Cloudflare assets-only，无服务端运行时），所以取数只能在客户端；**预渲染阶段不得发网络请求**，`build/routes.ts` 里也没有 `/api/releases.json`。
+  - 浏览器侧保持「不带任何自定义头的简单 GET」：GitHub API 返回 `Access-Control-Allow-Origin: *`，但 `User-Agent` 是 forbidden header，`GITHUB_TOKEN` 绝不能进客户端产物，自定义头会触发 CORS 预检。
+  - 未认证限流 60 次/小时/IP：成功结果按 GitHub 响应 `max-age=60` 在 `sessionStorage` 缓存 60 秒，同一页多个组件实例共用一次请求；失败不进缓存。禁用 JS 时页面停留在兜底数据，仍有完整内容。
 - 站点常量（品牌名、仓库地址、许可证、`PROMO_IMAGE`）只在 `shared/site.ts`；导航在 `app/data/nav.ts`；底栏渠道在 `app/data/socialLinks.ts`；首页文案在 `app/data/{home,showcase}.ts`。**改内容只改数据文件，不动版式。**
 
 ## 样式与 Nuxt UI 约定
@@ -199,7 +198,7 @@ scripts/                       # sync-fonts.mjs（字体灌注）/ verify-output
 - `tsconfig.json` 只是 `extends ./.nuxt/tsconfig.json`；别名规则：`@` / `~` → `app/`，`~~` → 仓库根，`#shared` → `shared/`，`#server` → `server/`。
 - 改了 `nuxt.config.ts` / `app.config.ts` 里影响类型或 `#build/ui.*` 的配置后，跑一次 `pnpm exec nuxt prepare`，否则编辑器会报找不到自动导入 / 主题类是旧的。
 - `@nuxt/content` 用 Node 内置的 `node:sqlite`（`experimental.sqliteConnector: 'native'`），**不需要 `better-sqlite3`**，也没有 `allowBuilds` 那一步；Node 22 会打一条 `ExperimentalWarning`，属正常。
-- 服务端路由只做构建期数据准备：`server/routes/api/releases.json.ts` 返回 JSON 对象即可；带后缀的文件名不要写成 `[slug].json.ts`，需要 JSON 后缀时用 `<dir>/index.json.ts`。
+- 站点没有服务端路由：`nitro.preset: 'static'` 下 `server/` 里的东西要么在构建期被预渲染成静态文件，要么线上不存在。运行时取数一律放客户端组合式函数（`onMounted` / `import.meta.client`），不要依赖 `useFetch('/api/...')`。
 - `nitro.preset` 被显式锁死为 `static`：Cloudflare 上的环境变量会把预设切到 `cloudflare-*`，那套产物带 Worker 入口，`wrangler deploy` 会找不到 assets 目录。
 - `nuxt.config.ts` 的 `icon.clientBundle.icons` 与 `app/data/*` 里的图标是手工同步关系，改了数据记得回来看一眼。
 
@@ -217,9 +216,9 @@ scripts/                       # sync-fonts.mjs（字体灌注）/ verify-output
 
 ## 提交前自检清单
 
-1. `pnpm generate`（或 `pnpm build`）通过且零错误；构建日志里除已知的 `[releases] GitHub 不可用` 外没有异常。
+1. `pnpm generate`（或 `pnpm build`）通过且零错误；构建日志没有异常，也不应有 `[releases]` 网络警告（构建期已不请求 GitHub）。
 2. `.output/public` 里能按预期找到 `/index.html`、`/download.html`、`/docs.html`、文档页与中文分类页；中文文件名未被百分号编码成错误路径。
-3. 浏览器实看：首页（Hero / 温馨提示 / 项目特性 / 组件展示 / 关于 / 加入开发）、`/download`、`/docs`、一个文档页、`/docs/category/<分类>`。
+3. 浏览器实看：首页（Hero / 温馨提示 / 项目特性 / 组件展示 / 关于 / 加入开发）、`/download`（首屏先出兜底卡片，挂载后异步换成 GitHub 实时版本；断网时保持兜底并显示「离线快照」）、`/docs`、一个文档页、`/docs/category/<分类>`。
 4. 宽度 1440 / 1024 / 1023 / 768 / 375 各过一遍：顶栏吸顶不抖、底栏在文末、无横向滚动、汉堡下拉面板开合与 `Escape` 收起、`aria-expanded` 正确。
 5. 站内跳转不整页刷新（Network 里不应出现 document 请求）；顶部进度条能正常收尾；从页面中部跳转后新页在顶部。
 6. 深浅色两种模式都看一遍：首帧不闪白、卡片描边与文字对比度正常、轮播/进度条/返回顶部不受主题影响而失色。

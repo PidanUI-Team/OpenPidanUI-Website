@@ -6,7 +6,7 @@ useSeoMeta({
   description: '下载 OpenPidanUI 的 Rainmeter 小组件与配套设置程序。当前版本来自 GitHub Releases。',
 });
 
-const { payload, latest, others } = useReleases();
+const { payload, latest, others, status } = useReleases();
 
 const requirements = [
   { icon: 'i-lucide-hard-drive-download', label: 'Windows 10 及以上' },
@@ -19,18 +19,18 @@ const requirements = [
   <div>
     <PageHeading
       title="下载 OpenPidanUI"
-      description="目前只提供 Rainmeter 小组件及其设置程序。版本数据在构建时从 GitHub Releases 拉取，页面不做运行时请求。"
+      description="目前只提供 Rainmeter 小组件及其设置程序。版本数据在页面加载时从 GitHub Releases 实时拉取，同步完成前先显示仓库内的兜底数据。"
     />
 
     <div class="pb-4">
       <UAlert
-        v-if="payload.source === 'snapshot'"
+        v-if="status === 'error'"
         class="mb-6"
         color="primary"
         variant="subtle"
         icon="i-lucide-circle-alert"
-        title="当前展示的是构建时快照"
-        description="构建时 GitHub 不可达，版本信息可能不是最新的；完整列表请到仓库的 Releases 页面查看。"
+        title="当前展示的是离线快照"
+        description="运行时未能连接 GitHub Releases（网络受限或 API 限流），已回退到仓库内的 downloads.json，版本信息可能不是最新的；完整列表请到仓库的 Releases 页面查看。"
       />
 
       <div v-if="latest" class="space-y-8">

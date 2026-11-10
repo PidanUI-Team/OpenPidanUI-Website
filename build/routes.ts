@@ -44,7 +44,8 @@ function walkDocs(dir: string, routeBase: string, result: DocsWalkResult): void 
 }
 
 export function buildRoutes(): string[] {
-  const base = ['/', '/download', '/docs', '/api/releases.json', '/404.html'];
+  // GitHub Releases 已改为客户端运行时拉取，构建期不再预渲染 /api/releases.json
+  const base = ['/', '/download', '/docs', '/404.html'];
   const result: DocsWalkResult = { routes: [], categories: new Set() };
   walkDocs(DOCS_DIR, '/docs', result);
 

@@ -15,7 +15,7 @@ export interface SiteRelease {
   version: string;
   name: string;
   publishedAt: string;
-  /** 构建期就格式化好，避免服务端/客户端 Intl 差异导致 hydration mismatch */
+  /** 归一化时就格式化成固定字符串，避免服务端/客户端 Intl 差异导致 hydration mismatch */
   publishedAtLabel: string;
   prerelease: boolean;
   notes: string;

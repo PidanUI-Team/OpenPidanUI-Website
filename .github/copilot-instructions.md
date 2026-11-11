@@ -142,7 +142,7 @@ scripts/                       # sync-fonts.mjs（字体灌注）/ verify-output
 - 版本数据链路：`app/composables/useReleases.ts` 在**客户端运行时**（`onMounted`）异步拉 `PidanUI-Team/OpenPidanUI` 的 GitHub Releases，用 `normalizeReleases()` 归一化成 `SiteRelease[]`。首屏（含预渲染静态 HTML）先渲染 `shared/data/downloads.json` 兜底数据，拉到实时结果后整体替换；**只有请求失败才回退 `downloads.json`**，此时 `source: 'snapshot'` 且页面显示「离线快照」提示。发版后无需重新构建本站。
   - `nitro.preset: 'static'` 是纯静态产物（Cloudflare assets-only，无服务端运行时），所以取数只能在客户端；**预渲染阶段不得发网络请求**，`build/routes.ts` 里也没有 `/api/releases.json`。
   - 浏览器侧保持「不带任何自定义头的简单 GET」：GitHub API 返回 `Access-Control-Allow-Origin: *`，但 `User-Agent` 是 forbidden header，`GITHUB_TOKEN` 绝不能进客户端产物，自定义头会触发 CORS 预检。
-  - 未认证限流 60 次/小时/IP：成功结果按 GitHub 响应 `max-age=60` 在 `sessionStorage` 缓存 60 秒，同一页多个组件实例共用一次请求；失败不进缓存。禁用 JS 时页面停留在兜底数据，仍有完整内容。
+  - 未认证限流 60 次/小时/IP：成功结果在 `sessionStorage` 缓存 10 分钟（600 秒），同一页多个组件实例共用一次请求；失败不进缓存。禁用 JS 时页面停留在兜底数据，仍有完整内容。
 - 站点常量（品牌名、仓库地址、许可证、`PROMO_IMAGE`）只在 `shared/site.ts`；导航在 `app/data/nav.ts`；底栏渠道在 `app/data/socialLinks.ts`；首页文案在 `app/data/{home,showcase}.ts`。**改内容只改数据文件，不动版式。**
 
 ## 样式与 Nuxt UI 约定

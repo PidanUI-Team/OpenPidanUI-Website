@@ -20,12 +20,12 @@ const API_URL = `https://api.github.com/repos/${SITE.repo}/releases?per_page=20`
 const REQUEST_TIMEOUT_MS = 8000;
 
 /**
- * 未认证限流是 60 次/小时/IP。GitHub 自身响应带 `Cache-Control: public, max-age=60`，
- * 所以本地会话缓存也只取 60 秒，不比服务端更陈旧；且只缓存成功结果，
+ * 未认证限流是 60 次/小时/IP。成功结果在 `sessionStorage` 缓存 10 分钟（600 秒），
+ * 减少同一会话内重复访问对限流额度的消耗；且只缓存成功结果，
  * 请求失败一律回退 downloads.json，不会把「离线快照」当成实时数据缓存下来。
  */
 const CACHE_KEY = 'openpidanui:releases:v1';
-const CACHE_TTL_MS = 60 * 1000;
+const CACHE_TTL_MS = 600 * 1000;
 
 export type ReleasesStatus = 'pending' | 'success' | 'error';
 

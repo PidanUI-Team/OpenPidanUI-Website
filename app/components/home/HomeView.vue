@@ -83,9 +83,9 @@ const SECTION_UI = {
     <!-- 重要说明 -->
     <UAlert
       class="mb-12"
-      color="primary"
+      color="info"
       variant="soft"
-      icon="i-lucide-triangle-alert"
+      icon="i-lucide-info"
       title="温馨提示"
       description="OpenPidanUI 是 PidanUI 的辅助组件开源代码库，面向 Windows 10 及以上系统。组件不做持久化的系统改动，卸载时切回默认主题即可恢复。"
     />

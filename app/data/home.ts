@@ -7,7 +7,6 @@ export interface FeatureItem {
   description: string;
 }
 
-/** 六条卖点，全部出自 OpenPidanUI 的自述（D:\TestProject\Eggix\README.md）。 */
 export const HOME_FEATURES: FeatureItem[] = [
   {
     icon: 'i-lucide-terminal',
@@ -15,10 +14,10 @@ export const HOME_FEATURES: FeatureItem[] = [
     description: '组件全面转向 .NET 10，告别易语言，杀软误报也少了一大截。',
   },
   {
-    icon: 'i-lucide-palette',
-    title: '精简版美化',
+    icon: 'i-lucide-star',
+    title: '继承 EggyUI 设计理念',
     description:
-      '只保留定制主题与 Rainmeter 小组件，去掉冗余的持久化改动，日常用起来接近原版 Windows。',
+      '组件的外观风格继承了 EggyUI 的蛋仔风设计理念，你看到的组件的样子还是那个熟悉的样子。',
   },
   {
     icon: 'i-lucide-layers',
@@ -40,7 +39,11 @@ export interface TimelineItem {
 
 /** 名称沿革：只讲事实，不复述争议。 */
 export const ABOUT_TIMELINE: TimelineItem[] = [
-  { time: '2024-04', title: 'EggyUI 启动', description: '以易语言为主要技术栈起步。' },
+  {
+    time: '2024-04',
+    title: 'EggyUI 启动',
+    description: '以易语言为主要技术栈起步。',
+  },
   {
     time: '2026-10',
     title: 'Finale Mini 发布',
@@ -51,7 +54,11 @@ export const ABOUT_TIMELINE: TimelineItem[] = [
     title: '更名 OpenPidanUI',
     description: 'OpenEggyUI 全面重构，转向 .NET 10，并恢复开发。',
   },
-  { time: '至今', title: '随 PidanUI 一起更新', description: '组件按模块发布，与主项目同步迭代。' },
+  {
+    time: '至今',
+    title: '随 PidanUI 一起更新',
+    description: '组件按模块发布，与主项目同步迭代。',
+  },
 ];
 
 export const ABOUT_TEXT = [
